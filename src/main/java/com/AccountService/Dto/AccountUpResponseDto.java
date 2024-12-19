@@ -1,4 +1,4 @@
-package com.BankofPacific.AccountService.Dto;
+package com.AccountService.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountResponseDto {
+public class AccountUpResponseDto {
     private String message;
 }

@@ -1,10 +1,13 @@
-package com.BankofPacific.AccountService.Services;
+package com.AccountService.Services;
 
-import com.BankofPacific.AccountService.Dto.Accountdto;
-import com.BankofPacific.AccountService.Mapper.AccountMapper;
-import com.BankofPacific.AccountService.Model.Account;
-import com.BankofPacific.AccountService.Repositories.AccountRepository;
-import com.BankofPacific.AccountService.Services.Interfaces.AccountService;
+import com.AccountService.Dto.AccountUpdateDto;
+import com.AccountService.Dto.Accountdto;
+import com.AccountService.Dto.DeleteAccountResponseDto;
+import com.AccountService.Mapper.AccountMapper;
+import com.AccountService.Model.Account;
+import com.AccountService.Repositories.AccountRepository;
+import com.AccountService.Services.Interfaces.AccountService;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -47,19 +50,41 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(Long accountId) throws Exception {
+    public DeleteAccountResponseDto deleteAccount(Long accountId) throws Exception {
         if (!accountrepo.existsById(accountId)) {
             throw new Exception("AccountId not found");
         }
         accountrepo.deleteById(accountId);
-
-
+        return new DeleteAccountResponseDto("Linked account deleted successfully");
     }
 
     @Override
     public List<Account> getAccountsByUserId(Long userId) {
         return accountrepo.findByUserId(userId);
 
+    }
+
+    @Override
+    public Account getAccountByUserId(Long accountId, Long userId) {
+
+        return accountrepo.findByAccountIdAndUserId(accountId, userId).orElse(null); // Return null if no match is found
+    }
+
+
+
+    @Override
+    public Account updateAccountDetails(Long accountId,Long userId,  AccountUpdateDto updatedAccount) {
+        Optional<Account> accountOptional = accountrepo.findByAccountIdAndUserId(accountId, userId);
+
+        if (accountOptional.isEmpty()) {
+            throw new IllegalArgumentException("Account not found for given user and account ID");
+        }
+
+        Account account = accountOptional.get();
+        AccountMapper.updateEntity(account, updatedAccount);
+        accountrepo.save(account);
+
+        return account;
     }
 
     public Accountdto updateAccount(Long accountId, Accountdto accountdto) throws Exception {
@@ -81,8 +106,22 @@ public class AccountServiceImpl implements AccountService {
         } else {
             throw new Exception("Account with ID " + accountId + " not found");
         }
-    }
 
+    }
+  //  @Transactional
+    public DeleteAccountResponseDto unlinkAccount( Long accountId,Long userId) {
+        // Validate if user eists
+//       Optional<Account> accountOptional = accountrepo.findByAccountIdAndUserId(accountId, userId);
+//        if (!accountOptional.isEmpty()) {
+//            throw new IllegalArgumentException("User with ID " + userId + " not found");
+//        }
+        accountrepo.deleteByAccountIdAndUserId(accountId, userId);
+
+
+
+        // Return success response
+        return new DeleteAccountResponseDto("Linked account deleted successfully");
+    }
 
 }
 

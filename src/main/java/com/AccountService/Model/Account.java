@@ -1,4 +1,4 @@
-package com.BankofPacific.AccountService.Model;
+package com.AccountService.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
@@ -7,8 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serial;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity

@@ -1,9 +1,10 @@
-package com.BankofPacific.AccountService.Mapper;
+package com.AccountService.Mapper;
 
-import com.BankofPacific.AccountService.Dto.Accountdto;
-import com.BankofPacific.AccountService.Model.Account;
+import com.AccountService.Dto.AccountUpdateDto;
+import com.AccountService.Dto.Accountdto;
+import com.AccountService.Model.Account;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 public class AccountMapper
 {
@@ -21,6 +22,12 @@ public class AccountMapper
 
 
         return accountdto;
+    }
+        // Update an existing Account entity with AccountDTO data
+    public static void updateEntity(Account account, AccountUpdateDto accountDTO) {
+        account.setAccountType(accountDTO.getAccountType());
+        account.setBalance(accountDTO.getBalance());
+        account.setCurrency(accountDTO.getCurrency());
     }
 
 }

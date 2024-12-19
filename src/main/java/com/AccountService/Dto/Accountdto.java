@@ -1,4 +1,4 @@
-package com.BankofPacific.AccountService.Dto;
+package com.AccountService.Dto;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Accountdto {
-     private Long userId;
-    private Long accountID;
+  private Long userId;
+ private Long accountID;
     private String accountNumber;// VARCHAR(20) UNIQUE, NOT NULL
     private String accountType;
     private String currency; // VARCHAR(10) with default value 'USD'
